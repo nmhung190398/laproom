@@ -1,0 +1,24 @@
+ INSERT tblroom_time ( id ,id_room ,id_user ,shift ,date ,classes )VALUES( ? ,? ,? ,? ,? ,?)
+ UPDATE tblroom_time SET id = ?  ,id_room = ?  ,id_user = ?  ,shift = ?  ,date = ?  ,classes = ?  WHERE 1 = 1
+=========================
+private Integer id;
+private Integer idRoom;
+private Integer idUser;
+private Integer shift;
+private Timestamp date;
+private String classes;
+
+=========================
+model.setId(resultSet.getInteger("id"));
+model.setIdRoom(resultSet.getInteger("id_room"));
+model.setIdUser(resultSet.getInteger("id_user"));
+model.setShift(resultSet.getInteger("shift"));
+model.setDate(resultSet.getTimestamp("date"));
+model.setClasses(resultSet.getString("classes"));
+
+
+====
+
+SELECT * FROM laproom.tblroom_time
+INNER JOIN tblroom ON tblroom.id = tblroom_time.id_room
+INNER JOIN tbluser ON tbluser.id = tblroom_time.id_user

@@ -1,0 +1,13 @@
+ INSERT tblroom ( id ,name ,location ,pc_count )VALUES( ? ,? ,? ,?)
+ UPDATE tblroom SET id = ?  ,name = ?  ,location = ?  ,pc_count = ?  WHERE 1 = 1
+=========================
+private Integer id;
+private String name;
+private String location;
+private Integer pcCount;
+
+=========================
+model.setId(resultSet.getInteger("id"));
+model.setName(resultSet.getString("name"));
+model.setLocation(resultSet.getString("location"));
+model.setPcCount(resultSet.getInteger("pc_count"));

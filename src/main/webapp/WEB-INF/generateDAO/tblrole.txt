@@ -1,0 +1,11 @@
+ INSERT tblrole ( id ,code ,title )VALUES( ? ,? ,?)
+ UPDATE tblrole SET id = ?  ,code = ?  ,title = ?  WHERE 1 = 1
+=========================
+private Integer id;
+private String code;
+private String title;
+
+=========================
+model.setId(resultSet.getInteger("id"));
+model.setCode(resultSet.getString("code"));
+model.setTitle(resultSet.getString("title"));

@@ -1,0 +1,17 @@
+ INSERT tbluser ( id ,username ,password ,fullname ,email ,id_role )VALUES( ? ,? ,? ,? ,? ,?)
+ UPDATE tbluser SET id = ?  ,username = ?  ,password = ?  ,fullname = ?  ,email = ?  ,id_role = ?  WHERE 1 = 1
+=========================
+private Integer id;
+private String username;
+private String password;
+private String fullname;
+private String email;
+private Integer idRole;
+
+=========================
+model.setId(resultSet.getInteger("id"));
+model.setUsername(resultSet.getString("username"));
+model.setPassword(resultSet.getString("password"));
+model.setFullname(resultSet.getString("fullname"));
+model.setEmail(resultSet.getString("email"));
+model.setIdRole(resultSet.getInteger("id_role"));
