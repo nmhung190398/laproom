@@ -40,8 +40,8 @@
 
 
 			<!-- /teacher/calendarcl -->
-			<li><a href="<%=request.getContextPath() %>/teacher/calendarcl"><i
-					class="fa fa-home fa-1x"></i>Thời Khóa Biểu</a></li>
+			<li><a href="<%=request.getContextPath() %>/admin/thong-ke"><i
+					class="fa fa-home fa-1x"></i>Thống kế lớp học</a></li>
 
 
 

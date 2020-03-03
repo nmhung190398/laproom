@@ -291,6 +291,10 @@
 		$("input[name='date']").val(date);
 		modalAdd.modal('show');
     });
+    $(".td-data").on("click", ".link-del" , function() {
+        console.log($(this));
+        window.location = 'tabs/del/' + $(this).attr('idDel');
+    });
 
     $("#modal-action").click(function() {
 		$("#form-add").submit();

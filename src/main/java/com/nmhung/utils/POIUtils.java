@@ -13,6 +13,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.*;
 
@@ -43,10 +44,7 @@ public class POIUtils {
             }
         }
         try {
-            FileOutputStream out = new FileOutputStream(new File(pathname));
-            workbook.write(out);
-            out.close();
-            System.out.println(pathname + " written successfully on disk.");
+            writeFile(workbook,pathname);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -139,10 +137,7 @@ public class POIUtils {
         setHeader(headers, createStyleForHeader(workbook), sheet.createRow(1));
         addDataInfoTabs(models, sheet, 2);
         try {
-            FileOutputStream out = new FileOutputStream(new File(pathname));
-            workbook.write(out);
-            out.close();
-            System.out.println(pathname + " written successfully on disk.");
+            writeFile(workbook,pathname);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -150,9 +145,17 @@ public class POIUtils {
         return true;
     }
 
+    private static void writeFile(XSSFWorkbook workbook,String pathname) throws Exception {
+        FileOutputStream out = new FileOutputStream(new File(pathname));
+        workbook.write(out);
+        out.close();
+        System.out.println(pathname + " written successfully on disk.");
+    }
+
+
     private static void addDataInfoTabs(List<RoomTimeModel> models, XSSFSheet sheet, int indexStart) {
         for (int i = 0; i < models.size(); ++i) {
-            RoomTimeModel model = models.get(0);
+            RoomTimeModel model = models.get(i);
             Row row = sheet.createRow(i + indexStart);
             Cell stt = createCell(row,0,i + 1);
             Cell gv = createCell(row,1,model.getClasS().getTeacher().getFullname());
@@ -182,5 +185,48 @@ public class POIUtils {
             cell.setCellValue((String) value);
         }
         return cell;
+    }
+
+    public static boolean writeStatistical(String pathname, List<RoomTimeModel> models, String title, String sheetName) {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet(sheetName);
+
+        Cell cell;
+        Row row;
+        row = sheet.createRow(0);
+        cell = row.createCell(0, CellType.STRING);
+        cell.setCellValue(title);
+        cell.setCellStyle(createStyleForHeader(workbook));
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 3));
+        String headers[] = {"#", "Phòng máy", "Ngày", "Ca"};
+        for (int i = 1; i < headers.length; i++) {
+            sheet.setColumnWidth(i, 30 * 256);
+        }
+        setHeader(headers, createStyleForHeader(workbook), sheet.createRow(1));
+        addDataStatistical(models, sheet, 2);
+        try {
+            writeFile(workbook,pathname);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    private static void addDataStatistical(List<RoomTimeModel> models, XSSFSheet sheet, int indexStart) {
+        for (int i = 0; i < models.size(); ++i) {
+            RoomTimeModel model = models.get(i);
+            Row row = sheet.createRow(i + indexStart);
+            Cell buoi = createCell(row,0,"buổi " + i + 1);
+            Cell pm = createCell(row,1,model.getRoom().getName() + "," + model.getRoom().getLocation());
+            Cell date = createCell(row,2,DateUtils.format(model.getDate()));
+            String tmp = "Tối";
+            if (model.getShift() == 0) {
+                tmp = "Sáng";
+            } else if (model.getShift() == 1) {
+                tmp = "Chiều";
+            }
+            Cell ca = createCell(row,3,tmp);
+        }
     }
 }

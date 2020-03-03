@@ -5,6 +5,7 @@ import com.nmhung.model.ClassModel;
 import com.nmhung.model.RoomModel;
 import com.nmhung.model.RoomTimeModel;
 import com.nmhung.model.UserModel;
+import com.nmhung.service.ClassService;
 import com.nmhung.service.RoomService;
 import com.nmhung.service.RoomTimeService;
 import com.nmhung.service.UserService;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +36,8 @@ public class RoomTimeController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    ClassService classService;
 
     @GetMapping("/admin/tabs")
     ModelAndView view(@RequestParam(value = "room", defaultValue = "0") Integer room,
@@ -73,14 +77,15 @@ public class RoomTimeController {
         model.setRoom(new RoomModel());
         model.getRoom().setId(idRoom);
         roomTimeService.add(model);
-        return "redirect:" + redirect;
+        return "redirect:" + redirect + "?room=" + idRoom + "&date=" + DateUtils.format(model.getDate());
     }
 
     @GetMapping("/admin/tabs/active/{id}")
     String add(@PathVariable Integer id){
         String redirect = "/admin/tabs";
         roomTimeService.active(id);
-        return "redirect:" + redirect;
+        RoomTimeModel roomTimeModel = roomTimeService.findById(id);
+        return "redirect:" + redirect + "?date=" + DateUtils.format(roomTimeModel.getDate()) + "&room=" + roomTimeModel.getRoom().getId();
     }
 
     @GetMapping("/admin/info")
@@ -90,6 +95,35 @@ public class RoomTimeController {
         List<RoomTimeModel> roomTimes = roomTimeService.findByDate(date);
         modelAndView.addObject("roomTimes",roomTimes);
         modelAndView.addObject("date",date);
+        return modelAndView;
+    }
+    @GetMapping("/admin/tabs/del/{id}")
+    public String del(@PathVariable(value = "id") Integer id){
+        String redirect = "/admin/tabs";
+        RoomTimeModel roomTimeModel = roomTimeService.findById(id);
+        if(!roomTimeModel.getActive()){
+            roomTimeService.delete(id);
+        }
+        return "redirect:" + redirect + "?date=" + DateUtils.format(roomTimeModel.getDate()) + "&room=" + roomTimeModel.getRoom().getId();
+    }
+
+    @GetMapping("/admin/thong-ke")
+    public ModelAndView viewByDate(
+        @RequestParam(value = "class",defaultValue = "0") Integer IdClass
+    ){
+        ClassModel classModel = null;
+        ModelAndView modelAndView = new ModelAndView("admin/history-tabs");
+        List<RoomTimeModel> roomTimes = new ArrayList<>();
+        if(IdClass != 0){
+            classModel = classService.findById(IdClass);
+            roomTimes = roomTimeService.findStatisticalByClass(IdClass);
+
+
+        }
+        modelAndView.addObject("classModel",classModel);
+        List<UserModel> teachers = userService.findAll();
+        modelAndView.addObject("roomTimes",roomTimes);
+        modelAndView.addObject("teachers",teachers);
         return modelAndView;
     }
 

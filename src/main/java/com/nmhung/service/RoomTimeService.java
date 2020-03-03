@@ -60,7 +60,7 @@ public class RoomTimeService {
     }
 
     public boolean delete(Integer id) {
-        roomRepository.deleteById(id);
+        roomTimeRepository.deleteById(id);
         return true;
     }
 
@@ -98,5 +98,15 @@ public class RoomTimeService {
         return models;
     }
 
+    public List<RoomTimeModel> findStatisticalByClass(Integer idClass){
+        List<RoomTimeEntity> entities = roomTimeRepository.findStatisticalByClass(idClass);
+        List<RoomTimeModel> models = entities.stream().map(roomTimeConver::toModel).collect(Collectors.toList());
+        return models;
+    }
 
+
+    public RoomTimeModel findById(Integer id) {
+        RoomTimeEntity entity = roomTimeRepository.findById(id).get();
+        return roomTimeConver.toModel(entity);
+    }
 }

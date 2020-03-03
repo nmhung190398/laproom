@@ -54,4 +54,14 @@ public class RoomTimeRepositoryCustomImpl implements RoomTimeRepositoryCustom {
         }
         return query.getResultList();
     }
+
+    @Override
+    public List<RoomTimeEntity> findStatisticalByClass(Integer idClass) {
+        String hql = "from com.nmhung.entity.RoomTimeEntity as rt WHERE rt.active = true ";
+        hql += " and rt.clasS.id = :idClass ";
+        hql += " order by rt.date desc";
+        Query query = entityManager.createQuery(hql,RoomTimeEntity.class);
+        query.setParameter("idClass",idClass);
+        return query.getResultList();
+    }
 }

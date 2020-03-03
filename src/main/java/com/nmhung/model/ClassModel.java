@@ -8,12 +8,14 @@ import java.util.Date;
 @Data
 //@Builder
 public class ClassModel {
-    private Integer id;
-    private String code;
+    protected Integer id;
+    protected String code;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date startDate;
+    protected Date startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date endDate;
-    private SubjectModel subject;
-    private UserModel teacher;
+    protected Date endDate;
+    protected SubjectModel subject;
+    protected UserModel teacher;
+
+
 }

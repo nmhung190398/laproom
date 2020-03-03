@@ -17,4 +17,5 @@ public interface RoomTimeRepository extends JpaRepository<RoomTimeEntity,Integer
 //    @Query("update RoomTimeEntity as rt set rt.active = ?2 WHERE rt.id = ?1")
 //    Integer changeActive(Integer id, Boolean active);
 
+
 }

@@ -5,7 +5,7 @@ function ajaxGet(url,cb) {
         dataType : 'json',
         success : cb,
         error : function(data) {
-            alert("Thất Bại\n");
+
         }
     });
 }

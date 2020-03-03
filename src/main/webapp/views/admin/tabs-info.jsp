@@ -59,13 +59,13 @@
                                                     ${item.clasS.subject.name}
                                             </td>
                                             <td>
-                                                <c:if test="${item.shift} == 0">
+                                                <c:if test="${item.shift == 0}">
                                                     Sáng
                                                 </c:if>
-                                                <c:if test="${item.shift} == 1">
+                                                <c:if test="${item.shift == 1}">
                                                     Chiều
                                                 </c:if>
-                                                <c:if test="${item.shift} == 2">
+                                                <c:if test="${item.shift == 2}">
                                                     Tối
                                                 </c:if>
                                             </td>
@@ -108,6 +108,8 @@
 <%@ include file="/views/include/jsinclude.jsp"%>
 <script>
     const contextPath = '<c:out value="${pageContext.servletContext.contextPath}" />';
+    const slClass = $('select[name="idClass"]');
+    const slTeacher = $('select[name="idTeacher"]');
     $('#date-input').val('<fmt:formatDate pattern="yyyy-MM-dd" value="${date}" />');
 
     $('#btn-search').click(function () {
